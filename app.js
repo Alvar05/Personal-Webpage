@@ -29,6 +29,7 @@
     return;
   }
 
+  body.classList.add('js');
   var T = window.THREE;
   var REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var MOBILE = innerWidth < 820 || matchMedia('(pointer: coarse)').matches;
@@ -37,15 +38,15 @@
      1. Trazado y estaciones
      ================================================================== */
   var ST = [
-    { p: 0.015, w: 0.075, side:  0, code: 'EST. 00 — ENTRADA',         sub: 'LÍNEA A · ORIGEN' },
-    { p: 0.115, w: 0.070, side: -1, code: 'EST. 01 — SALA DE CONTROL', sub: 'LÍNEA A · MÉTRICAS' },
-    { p: 0.225, w: 0.070, side:  1, code: 'EST. 02 — IBIZA 2016',      sub: 'LÍNEA A · BANCO DE MONTAJE' },
-    { p: 0.335, w: 0.070, side: -1, code: 'EST. 03 — TAILANDIA 2018',  sub: 'LÍNEA A · MESA DE COMPETICIÓN' },
-    { p: 0.455, w: 0.072, side:  1, code: 'EST. 04 — WRO 2021',        sub: 'LÍNEA B · VITRINA FUTURE ENGINEERS' },
-    { p: 0.575, w: 0.072, side: -1, code: 'EST. 05 — PANAMÁ 2023',     sub: 'LÍNEA B · PISTA DE PRUEBAS' },
-    { p: 0.695, w: 0.072, side:  1, code: 'EST. 06 — AWAYTER / TFG',   sub: 'LÍNEA C · BANCO DE DISPENSACIÓN' },
-    { p: 0.805, w: 0.068, side: -1, code: 'EST. 07 — CAPACIDADES',     sub: 'LÍNEA C · INTEGRACIÓN' },
-    { p: 0.940, w: 0.085, side:  0, code: 'EST. 08 — CONTACTO',        sub: 'LÍNEA C · FIN DE LÍNEA' }
+    { p: 0.015, w: 0.075, side:  0, code: 'Entrada',           sub: 'De Ibiza a Barcelona' },
+    { p: 0.115, w: 0.070, side: -1, code: 'Lo que estudié',    sub: 'Universitat de Vic' },
+    { p: 0.225, w: 0.070, side:  1, code: 'Ibiza, 2016',       sub: 'El banco de montaje' },
+    { p: 0.335, w: 0.070, side: -1, code: 'Tailandia, 2018',   sub: 'La mesa de competición' },
+    { p: 0.455, w: 0.072, side:  1, code: 'WRO 2021',          sub: 'Sextos del mundo' },
+    { p: 0.575, w: 0.072, side: -1, code: 'Panamá, 2023',      sub: 'La pista de pruebas' },
+    { p: 0.695, w: 0.072, side:  1, code: 'Awayter, 2025–26',  sub: 'El banco de dispensación' },
+    { p: 0.805, w: 0.068, side: -1, code: 'Tres oficios',      sub: 'Una sola cabeza' },
+    { p: 0.940, w: 0.085, side:  0, code: 'Fin de línea',      sub: '¿Hablamos?' }
   ];
 
   var WAY = [
@@ -310,20 +311,57 @@
     return toTex(c);
   }
 
-  function iconTexture(glyph, label) {
+  function iconTexture(kind, label) {
     var w = 384, h = 768, c = cvs(w, h), x = c.getContext('2d');
     var g = x.createLinearGradient(0, 0, 0, h);
     g.addColorStop(0, '#1e3625'); g.addColorStop(1, '#0d1a12');
     x.fillStyle = g; x.fillRect(0, 0, w, h);
     x.fillStyle = '#d0e98b'; x.fillRect(0, 0, w, 16);
     x.strokeStyle = 'rgba(208,233,139,.55)'; x.lineWidth = 5; x.strokeRect(14, 14, w - 28, h - 28);
-    x.fillStyle = '#d8f096'; x.font = '600 200px Manrope, Arial, sans-serif';
-    x.textAlign = 'center'; x.textBaseline = 'middle';
-    x.fillText(glyph, w / 2, h * 0.34);
+
+    // pictograma: trazo único, 14 px, esquinas redondas
+    x.save();
+    x.translate(w / 2, h * 0.34);
+    x.strokeStyle = '#d8f096'; x.fillStyle = '#d8f096';
+    x.lineWidth = 14; x.lineCap = 'round'; x.lineJoin = 'round';
+    if (kind === 'gear') {
+      var R = 92, r = 62, teeth = 8;
+      x.beginPath();
+      for (var i = 0; i < teeth; i++) {
+        var a0 = (i / teeth) * Math.PI * 2, a1 = a0 + Math.PI / teeth;
+        var ae = a1 - Math.PI / (teeth * 4), ab = a0 + Math.PI / (teeth * 4);
+        x.lineTo(Math.cos(a0) * r, Math.sin(a0) * r);
+        x.lineTo(Math.cos(ab) * R, Math.sin(ab) * R);
+        x.lineTo(Math.cos(ae) * R, Math.sin(ae) * R);
+        x.lineTo(Math.cos(a1) * r, Math.sin(a1) * r);
+        x.arc(0, 0, r, a1, a0 + Math.PI * 2 / teeth, false);
+      }
+      x.closePath(); x.stroke();
+      x.beginPath(); x.arc(0, 0, 26, 0, Math.PI * 2); x.stroke();
+    } else if (kind === 'wave') {
+      x.beginPath();
+      for (var k = 0; k <= 120; k++) {
+        var px = -120 + k * 2, py = Math.sin(k / 120 * Math.PI * 3) * 52;
+        if (k === 0) x.moveTo(px, py); else x.lineTo(px, py);
+      }
+      x.stroke();
+      x.beginPath(); x.moveTo(-140, 0); x.lineTo(-124, 0); x.moveTo(124, 0); x.lineTo(140, 0); x.stroke();
+      x.beginPath(); x.arc(-140, 0, 9, 0, 7); x.fill();
+      x.beginPath(); x.arc(140, 0, 9, 0, 7); x.fill();
+    } else {
+      x.beginPath();
+      x.moveTo(-60, -90); x.lineTo(-108, -50); x.lineTo(-108, 50); x.lineTo(-60, 90);
+      x.moveTo(60, -90); x.lineTo(108, -50); x.lineTo(108, 50); x.lineTo(60, 90);
+      x.moveTo(24, -96); x.lineTo(-24, 96);
+      x.stroke();
+    }
+    x.restore();
+
     var parts = label.split('\n');
+    x.textAlign = 'center'; x.textBaseline = 'middle';
     x.font = '600 46px Manrope, Arial, sans-serif'; x.fillStyle = '#f3f7ec';
     x.fillText(parts[0], w / 2, h * 0.62);
-    x.font = '500 26px "JetBrains Mono", monospace'; x.fillStyle = '#a6bf9a';
+    x.font = '500 27px "DM Sans", Arial, sans-serif'; x.fillStyle = '#a6bf9a';
     if (parts[1]) x.fillText(parts[1], w / 2, h * 0.70);
     return toTex(c);
   }
@@ -576,6 +614,10 @@
      5. Piezas de puesto de trabajo
      ================================================================== */
   var arms = [], spinners = [], drivers = [], dispenserGrains = null;
+  // materiales de rótulos, placas y fotos: se iluminan al llegar al puesto
+  var glowMats = ST.map(function () { return []; });
+  var glowT = ST.map(function () { return 0; });
+  function regGlow(idx, mat) { if (glowMats[idx]) glowMats[idx].push(mat); }
 
   function robotArm(scale, color) {
     var mat = new T.MeshStandardMaterial({ color: color, roughness: 0.4, metalness: 0.48 });
@@ -930,6 +972,7 @@
     var sign = panel(4.4, 1.1, new T.MeshBasicMaterial({
       map: signTexture(opts.signTitle || '', opts.signSub || '', opts.accent) }));
     place(sign, u - 0.012, 0, 4.5, 'back'); g.add(sign);
+    regGlow(idx, sign.material);
     [-1.9, 1.9].forEach(function (o) {
       var hang = box(0.05, 1.6, 0.05, M.steelD);
       place(hang, u - 0.012, o, 5.6, 'along'); g.add(hang);
@@ -942,6 +985,7 @@
       var dnum = panel(1.34, 0.72, new T.MeshBasicMaterial({
         map: decalTexture(opts.decal), transparent: true, depthWrite: false }));
       place(dnum, u - 0.007, pl, 0.86, 'back'); dnum.translateZ(0.05); g.add(dnum);
+      regGlow(idx, dnum.material);
       var leg = box(0.1, 0.86, 0.1, M.steelD);
       place(leg, u - 0.007, pl, 0.43, 'along'); g.add(leg);
     }
@@ -953,7 +997,7 @@
     beamCone.scale.set(1.5, 1.05, 1.5); g.add(beamCone);
 
     scene.add(g);
-    return { group: g, u: u, lat: lat, side: side, w: w, d: d };
+    return { group: g, u: u, lat: lat, side: side, w: w, d: d, idx: idx };
   }
 
   // coordenadas locales de la celda: along = a lo largo del pasillo,
@@ -968,7 +1012,9 @@
   function photoPanel(c, file, w, h, along, height) {
     var grp = new T.Group();
     var frm = box(w + 0.16, h + 0.16, 0.08, M.dark); frm.position.z = -0.05; grp.add(frm);
-    grp.add(panel(w, h, new T.MeshBasicMaterial({ map: photo(file) })));
+    var picMat = new T.MeshBasicMaterial({ map: photo(file) });
+    grp.add(panel(w, h, picMat));
+    regGlow(c.idx, picMat);
     var lip = box(w + 0.16, 0.05, 0.14, M.glow);
     lip.position.set(0, -(h / 2) - 0.11, 0.02); grp.add(lip);
     inCell(c, grp, along, c.d / 2 - 0.3, height);
@@ -980,13 +1026,15 @@
     return grp;
   }
 
+  var gateLampMat = new T.MeshBasicMaterial({ color: 0x1a2416 });
+
   /* ---------- 00 · portal de entrada ---------- */
   (function () {
     var u = 0.052;
     [-5.3, 5.3].forEach(function (lat) {
       var col = box(1.1, 6.2, 1.1, M.dark); place(col, u, lat, 3.1, 'along'); scene.add(col);
       var stripe = box(1.18, 0.6, 1.18, M.hazard); place(stripe, u, lat, 0.42, 'along'); scene.add(stripe);
-      var lamp = new T.Mesh(G.ico, M.glow); lamp.scale.setScalar(0.2);
+      var lamp = new T.Mesh(G.ico, gateLampMat); lamp.scale.setScalar(0.2);
       lamp.position.copy(pointAt(u, lat, 5.4)); scene.add(lamp);
     });
     var lintel = box(12, 1.3, 0.9, M.dark); place(lintel, u, 0, 6.45, 'along'); scene.add(lintel);
@@ -1282,9 +1330,9 @@
   (function () {
     var c = cell(7, { signTitle: 'CAPACIDADES', signSub: 'EST. 07 · UN MISMO SISTEMA',
                       decal: '07', w: 9.0, d: 5.0, lat: 7.6 });
-    [{ along: -2.9, icon: '⚙', label: 'MECÁNICA\nCAD · 3D · ENSAYOS' },
-     { along: 0, icon: '∿', label: 'ELECTRÓNICA\nSENSORES · CONTROL' },
-     { along: 2.9, icon: '{ }', label: 'PROGRAMACIÓN\nC++ · PYTHON · ROS' }
+    [{ along: -2.9, icon: 'gear', label: 'MECÁNICA\nCAD · 3D · ENSAYOS' },
+     { along: 0, icon: 'wave', label: 'ELECTRÓNICA\nSENSORES · CONTROL' },
+     { along: 2.9, icon: 'code', label: 'PROGRAMACIÓN\nC++ · PYTHON · ROS' }
     ].forEach(function (it, i) {
       inCell(c, cyl(0.55, 0.18, M.steelD), it.along, 0.2, 0.43);
       inCell(c, box(0.18, 1.0, 0.18, M.steelD), it.along, 0.2, 1.0, false);
@@ -1361,10 +1409,43 @@
      7. Interfaz
      ================================================================== */
   var els = Array.prototype.slice.call(document.querySelectorAll('.station'));
-  var railItems = Array.prototype.slice.call(document.querySelectorAll('.rail li'));
+  var railItems = Array.prototype.slice.call(document.querySelectorAll('.rail-stops li'));
+  var railCam = document.getElementById('rail-cam');
+
+  // plano de planta: el trazado real proyectado en 2D, con una parada por estación
+  var MAP = { x0: 0, x1: 88, z0: 24, z1: -176, w: 64, h: 210, pad: 7 };
+  function mapXY(v) {
+    return {
+      x: MAP.pad + (v.x - MAP.x0) / (MAP.x1 - MAP.x0) * (MAP.w - MAP.pad * 2),
+      y: MAP.pad + (MAP.z0 - v.z) / (MAP.z0 - MAP.z1) * (MAP.h - MAP.pad * 2)
+    };
+  }
+  (function buildMap() {
+    var path = document.getElementById('rail-path');
+    if (!path) return;
+    var pts = CURVE.getSpacedPoints(90), d = '';
+    for (var i = 0; i < pts.length; i++) {
+      var m = mapXY(pts[i]);
+      d += (i ? ' L' : 'M') + m.x.toFixed(1) + ' ' + m.y.toFixed(1);
+    }
+    path.setAttribute('d', d);
+    railItems.forEach(function (li, i) {
+      var btn = li.querySelector('button');
+      var m = mapXY(pointAt(pToU(ST[i].p), 0, 0));
+      btn.style.left = (m.x / MAP.w * 100) + '%';
+      btn.style.top = (m.y / MAP.h * 100) + '%';
+    });
+    var ticks = document.getElementById('hud-ticks');
+    if (ticks) {
+      ST.forEach(function (st) {
+        var b = document.createElement('b');
+        b.style.left = (st.p * 100) + '%';
+        ticks.appendChild(b);
+      });
+    }
+  })();
   var hudStation = document.getElementById('hud-station');
   var hudSub = document.getElementById('hud-sub');
-  var hudPct = document.getElementById('hud-pct');
   var hudFill = document.getElementById('hud-fill');
   var hudCue = document.getElementById('hud-cue');
 
@@ -1394,9 +1475,9 @@
       var a = smoothstep(1 - Math.abs(p - ST[i].p) / ST[i].w);
       var el = els[i];
       if (el) {
-        el.style.opacity = a;
-        el.style.setProperty('--dy', ((1 - a) * 26).toFixed(1) + 'px');
-        el.classList.toggle('is-live', a > 0.05);
+        el.style.opacity = Math.min(1, a * 2.2);
+        el.style.setProperty('--a', a.toFixed(3));
+        el.classList.toggle('is-live', a > 0.02);
       }
       if (a > bestA) { bestA = a; best = i; }
     }
@@ -1406,10 +1487,8 @@
       hudSub.textContent = ST[best].sub;
       railItems.forEach(function (li, i) { li.classList.toggle('is-live', i === best); });
     }
-    var pct = Math.round(p * 100);
-    hudPct.textContent = (pct < 10 ? '0' : '') + pct + '%';
-    hudFill.style.width = (p * 100) + '%';
-    hudCue.textContent = p > 0.96 ? 'FIN DE LÍNEA' : (p < 0.02 ? 'DESLIZA ↓' : 'EN RUTA');
+    hudFill.style.transform = 'scaleX(' + p + ')';
+    hudCue.classList.toggle('is-hidden', p > 0.03);
   }
 
   /* ==================================================================
@@ -1426,6 +1505,9 @@
 
   var clock = new T.Clock();
   var grainM4 = new T.Matrix4();
+  var BASE_FOV = MOBILE ? 74 : 62, fovKick = 0, prevP = 0;
+  var bootT = REDUCED ? 1 : 0, booted = false;
+  var _c1 = new T.Color(), _cDim = new T.Color(0x555b53), _cOn = new T.Color(0xffffff);
   var _lapA = new T.Vector2(), _lapB = new T.Vector2(), _lapC = new T.Vector2();
 
   // Punto del recorrido en coordenadas locales de la celda. El radio se
@@ -1453,6 +1535,36 @@
     smoothP += (targetP - smoothP) * (REDUCED ? 1 : Math.min(1, dt * 5.5));
     var p = smoothP, u = pToU(p);
     updateOverlay(p);
+
+    // la nave se enciende una vez: luces, lámparas del portal y titular
+    if (booted && bootT < 1) bootT = Math.min(1, bootT + dt / 1.4);
+    var bootE = bootT * bootT * (3 - 2 * bootT);
+    var flicker = bootT < 1 ? (0.72 + 0.28 * Math.sin(time * 41) * Math.sin(time * 17)) : 1;
+    gateLampMat.color.copy(_cDim).lerp(new T.Color(0xd0e98b), bootE * flicker);
+
+    // la lente se abre un punto cuando aceleras: sensación de velocidad
+    var vel = Math.abs(p - prevP) / Math.max(dt, 0.001); prevP = p;
+    var kickTarget = REDUCED ? 0 : Math.min(7, vel * 60);
+    fovKick += (kickTarget - fovKick) * Math.min(1, dt * 5);
+    var fov = BASE_FOV + fovKick;
+    if (Math.abs(camera.fov - fov) > 0.02) { camera.fov = fov; camera.updateProjectionMatrix(); }
+
+    // el punto de la cámara sobre el plano de planta
+    if (railCam) {
+      var mc = mapXY(frame(u).pos);
+      railCam.style.left = (mc.x / MAP.w * 100) + '%';
+      railCam.style.top = (mc.y / MAP.h * 100) + '%';
+    }
+
+    // los rótulos, placas y fotos de cada puesto se encienden al llegar
+    for (var gi2 = 0; gi2 < ST.length; gi2++) {
+      var gTarget = smoothstep(1 - Math.abs(p - ST[gi2].p) / (ST[gi2].w * 1.6));
+      glowT[gi2] += (gTarget - glowT[gi2]) * Math.min(1, dt * 4);
+      var mats = glowMats[gi2];
+      if (!mats.length) continue;
+      _c1.copy(_cDim).lerp(_cOn, 0.15 + 0.85 * glowT[gi2]);
+      for (var mi = 0; mi < mats.length; mi++) mats[mi].color.copy(_c1);
+    }
 
     var f = frame(u);
     camera.position.set(f.pos.x, CAM_Y, f.pos.z);
@@ -1485,6 +1597,7 @@
     for (var i = 0; i < rollingLights.length; i++) {
       tmpB.copy(pointAt(Math.min(Math.max(u + (i - 1) * 0.017, 0), 1), 0, 5.4));
       rollingLights[i].position.copy(tmpB);
+      rollingLights[i].intensity = 62 * bootE * (bootT < 1 ? flicker : 1);
     }
 
     if (st) {
@@ -1578,12 +1691,9 @@
      ================================================================== */
   var loaderEl = document.getElementById('loader');
   var fillEl = document.getElementById('loader-fill');
-  var pctEl = document.getElementById('loader-pct');
 
   function setLoad(v) {
-    var n = Math.round(v * 100);
-    if (fillEl) fillEl.style.width = n + '%';
-    if (pctEl) pctEl.textContent = (n < 10 ? '0' : '') + n + '%';
+    if (fillEl) fillEl.style.transform = 'scaleX(' + v + ')';
   }
   setLoad(0.12);
   manager.onProgress = function (url, loaded, total) { setLoad(0.12 + 0.88 * (loaded / Math.max(total, 1))); };
@@ -1597,7 +1707,11 @@
     readScroll();
     smoothP = targetP;
     updateOverlay(targetP);
-    setTimeout(function () { if (loaderEl) loaderEl.classList.add('is-done'); }, 260);
+    setTimeout(function () {
+      if (loaderEl) loaderEl.classList.add('is-done');
+      booted = true;
+      body.classList.add('is-booted');
+    }, 260);
     frameLoop();
   }
   manager.onLoad = start;
@@ -1605,7 +1719,8 @@
 
   addEventListener('resize', function () {
     camera.aspect = innerWidth / innerHeight;
-    camera.fov = innerWidth < 820 ? 74 : 62;
+    BASE_FOV = innerWidth < 820 ? 74 : 62;
+    camera.fov = BASE_FOV + fovKick;
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth, innerHeight, false);
     readScroll();
