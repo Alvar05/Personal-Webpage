@@ -37,7 +37,7 @@ The production-line setting connects the presentation to my engineering backgrou
 - **Direct navigation:** a station map, progress indicator and a persistent contact link.
 - **Responsive interface:** layouts and graphics settings adapted for smaller screens and touch devices.
 - **Accessibility features:** semantic HTML, labelled form fields, visible keyboard focus, a skip link and reduced-motion adjustments. If Three.js or WebGL is unavailable, JavaScript switches to a stacked document layout.
-- **Contact:** a direct email link and a FormSubmit form with browser validation and a honeypot field.
+- **Contact:** a direct email link and a FormSubmit form with browser validation, FormSubmit’s default CAPTCHA and a dedicated return page.
 
 ## Technology
 
@@ -60,6 +60,7 @@ Open [localhost:8000](http://localhost:8000). Serve the site over HTTP rather th
 ```text
 .
 ├── index.html       English narrative, metadata, navigation and contact form
+├── thanks.html      Form return page with the correct portfolio link
 ├── style.css        Responsive layout, panels, station map and visual effects
 ├── app.js           3D scene, English scene labels, camera and animation
 ├── assets/          Project photographs, portrait and social preview image

@@ -979,15 +979,19 @@
     });
 
     if (opts.decal) {
-      var pl = lat - side * (w / 2 - 0.3);
-      var plateBack = box(1.5, 0.86, 0.08, M.dark);
-      place(plateBack, u - 0.007, pl, 0.86, 'back'); g.add(plateBack);
-      var dnum = panel(1.34, 0.72, new T.MeshBasicMaterial({
+      // Keep number signs in a dedicated lane inside the guardrails and belt,
+      // just before the camera stop, clear of benches and moving machinery.
+      var numberU = u - 0.65 / LEN;
+      var pl = side * 3.0;
+      var numberY = 1.65;
+      var plateBack = box(0.95, 0.58, 0.08, M.dark);
+      place(plateBack, numberU, pl, numberY, 'in'); g.add(plateBack);
+      var dnum = panel(0.85, 0.50, new T.MeshBasicMaterial({
         map: decalTexture(opts.decal), transparent: true, depthWrite: false }));
-      place(dnum, u - 0.007, pl, 0.86, 'back'); dnum.translateZ(0.05); g.add(dnum);
+      place(dnum, numberU, pl, numberY, 'in'); dnum.translateZ(0.05); g.add(dnum);
       regGlow(idx, dnum.material);
-      var leg = box(0.1, 0.86, 0.1, M.steelD);
-      place(leg, u - 0.007, pl, 0.43, 'along'); g.add(leg);
+      var leg = box(0.1, numberY, 0.1, M.steelD);
+      place(leg, numberU, pl, numberY / 2, 'along'); g.add(leg);
     }
 
     var spot = box(2.6, 0.12, 0.7, M.lamp);
@@ -1411,6 +1415,22 @@
   var els = Array.prototype.slice.call(document.querySelectorAll('.station'));
   var railItems = Array.prototype.slice.call(document.querySelectorAll('.rail-stops li'));
   var railCam = document.getElementById('rail-cam');
+  var railCaption = document.getElementById('rail-caption');
+  var previewStation = null;
+  function updateRailCaption() {
+    if (!railCaption) return;
+    var i = previewStation === null ? Math.max(0, activeIdx) : previewStation;
+    railCaption.textContent = railItems[i].textContent.trim();
+  }
+  railItems.forEach(function (li, i) {
+    var btn = li.querySelector('button');
+    function preview() { previewStation = i; updateRailCaption(); }
+    function restore() { previewStation = null; updateRailCaption(); }
+    btn.addEventListener('mouseenter', preview);
+    btn.addEventListener('focus', preview);
+    btn.addEventListener('mouseleave', restore);
+    btn.addEventListener('blur', restore);
+  });
 
   // plano de planta: el trazado real proyectado en 2D, con una parada por estación
   var MAP = { x0: 0, x1: 88, z0: 24, z1: -176, w: 64, h: 210, pad: 7 };
@@ -1455,6 +1475,8 @@
   function readScroll() {
     var m = maxScroll();
     targetP = m > 0 ? Math.min(Math.max(scrollY / m, 0), 1) : 0;
+    previewStation = null;
+    updateRailCaption();
   }
   addEventListener('scroll', readScroll, { passive: true });
 
@@ -1486,6 +1508,7 @@
       hudStation.textContent = ST[best].code;
       hudSub.textContent = ST[best].sub;
       railItems.forEach(function (li, i) { li.classList.toggle('is-live', i === best); });
+      updateRailCaption();
     }
     hudFill.style.transform = 'scaleX(' + p + ')';
     hudCue.classList.toggle('is-hidden', p > 0.03);
