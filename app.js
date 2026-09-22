@@ -38,15 +38,15 @@
      1. Trazado y estaciones
      ================================================================== */
   var ST = [
-    { p: 0.015, w: 0.075, side:  0, code: 'Entrada',           sub: 'De Ibiza a Barcelona' },
-    { p: 0.115, w: 0.070, side: -1, code: 'Lo que estudié',    sub: 'Universitat de Vic' },
-    { p: 0.225, w: 0.070, side:  1, code: 'Ibiza, 2016',       sub: 'El banco de montaje' },
-    { p: 0.335, w: 0.070, side: -1, code: 'Tailandia, 2018',   sub: 'La mesa de competición' },
-    { p: 0.455, w: 0.072, side:  1, code: 'WRO 2021',          sub: 'Sextos del mundo' },
-    { p: 0.575, w: 0.072, side: -1, code: 'Panamá, 2023',      sub: 'La pista de pruebas' },
-    { p: 0.695, w: 0.072, side:  1, code: 'Awayter, 2025–26',  sub: 'El banco de dispensación' },
-    { p: 0.805, w: 0.068, side: -1, code: 'Tres oficios',      sub: 'Una sola cabeza' },
-    { p: 0.940, w: 0.085, side:  0, code: 'Fin de línea',      sub: '¿Hablamos?' }
+    { p: 0.015, w: 0.075, side:  0, code: 'Entrance',           sub: 'From Ibiza to Barcelona' },
+    { p: 0.115, w: 0.070, side: -1, code: 'Education',    sub: 'Universitat de Vic' },
+    { p: 0.225, w: 0.070, side:  1, code: 'Ibiza, 2016',       sub: 'The assembly bench' },
+    { p: 0.335, w: 0.070, side: -1, code: 'Thailand, 2018',   sub: 'The competition table' },
+    { p: 0.455, w: 0.072, side:  1, code: 'WRO 2021',          sub: 'Sixth worldwide' },
+    { p: 0.575, w: 0.072, side: -1, code: 'Panama, 2023',      sub: 'The test track' },
+    { p: 0.695, w: 0.072, side:  1, code: 'Awayter, 2025–26',  sub: 'The dispensing bench' },
+    { p: 0.805, w: 0.068, side: -1, code: 'Three disciplines',      sub: 'One mindset' },
+    { p: 0.940, w: 0.085, side:  0, code: 'End of the line',      sub: 'Let’s talk' }
   ];
 
   var WAY = [
@@ -243,7 +243,7 @@
     });
     x.fillStyle = 'rgba(208,233,139,.75)';
     x.font = '600 20px Manrope, Arial, sans-serif';
-    x.fillText('HERRAMIENTA', 60, 205);
+    x.fillText('TOOLS', 60, 205);
     x.fillStyle = 'rgba(255,255,255,.3)'; x.fillRect(52, 216, 400, 3);
     return toTex(c);
   }
@@ -255,7 +255,7 @@
     x.strokeStyle = 'rgba(0,0,0,.28)'; x.lineWidth = 6; x.strokeRect(6, 6, s - 12, s - 12);
     x.fillStyle = 'rgba(245,245,238,.92)'; x.fillRect(40, 96, 176, 66);
     x.fillStyle = '#20281f'; x.font = '600 26px Manrope, Arial, sans-serif';
-    x.fillText(label, 54, 132);
+    x.fillText(label, 54, 132, 150);
     for (var i = 0; i < 16; i++) x.fillRect(56 + i * 9, 142, 2 + (i % 3), 12);
     noise(x, s, 1200, 0.08, true);
     return toTex(c);
@@ -268,10 +268,10 @@
     x.fillStyle = accent || '#d0e98b'; x.fillRect(9, 9, 16, h - 18);
     x.textBaseline = 'middle';
     x.fillStyle = '#eef1e8'; x.font = '600 78px Manrope, Arial, sans-serif';
-    x.fillText(title, 56, sub ? 100 : h / 2);
+    x.fillText(title, 56, sub ? 100 : h / 2, w - 100);
     if (sub) {
       x.fillStyle = accent || '#d0e98b'; x.font = '500 36px "JetBrains Mono", monospace';
-      x.fillText(sub, 58, 176);
+      x.fillText(sub, 58, 176, w - 100);
     }
     return toTex(c);
   }
@@ -291,7 +291,7 @@
       }
       if (ln.small) {
         x.fillStyle = '#8b9a89'; x.font = '400 21px "JetBrains Mono", monospace';
-        x.fillText(ln.small, 34, y); y += 34;
+        x.fillText(ln.small, 34, y, w - 68); y += 34;
       }
       if (ln.rule) {
         x.strokeStyle = 'rgba(208,233,139,.2)';
@@ -949,7 +949,7 @@
     spinners.push({ obj: spin, speed: 0.8, axis: 'x' });
     var gear = cyl(0.11, 0.04, M.steel); gear.rotation.z = Math.PI / 2;
     gear.position.set(0.26, 0.42, 0); g.add(gear);
-    var lbl = panel(0.68, 0.17, new T.MeshBasicMaterial({ map: signTexture('4 PALAS FLEX 93A', '') }));
+    var lbl = panel(0.68, 0.17, new T.MeshBasicMaterial({ map: signTexture('4 FLEX 93A BLADES', '') }));
     lbl.position.set(0, 0.14, 0.27); lbl.rotation.x = -0.5; g.add(lbl);
     return g;
   }
@@ -1039,7 +1039,7 @@
     });
     var lintel = box(12, 1.3, 0.9, M.dark); place(lintel, u, 0, 6.45, 'along'); scene.add(lintel);
     var gateSign = panel(7.4, 1.5, new T.MeshBasicMaterial({
-      map: signTexture('ÁLVARO HERNÁNDEZ', 'LÍNEA DE PRODUCCIÓN · MECATRÓNICA') }));
+      map: signTexture('ÁLVARO HERNÁNDEZ', 'PRODUCTION LINE · MECHATRONICS') }));
     place(gateSign, u - 0.004, 0, 4.95, 'back'); scene.add(gateSign);
 
     var arrowMat = new T.MeshBasicMaterial({
@@ -1055,7 +1055,7 @@
 
   /* ---------- 01 · sala de control ---------- */
   (function () {
-    var c = cell(1, { signTitle: 'SALA DE CONTROL', signSub: 'EST. 01 · EXPEDIENTE ACADÉMICO', decal: '01' });
+    var c = cell(1, { signTitle: 'CONTROL ROOM', signSub: 'ST. 01 · ACADEMIC RECORD', decal: '01' });
 
     inCell(c, box(4.6, 0.12, 1.2, M.steelD), 0, 0, 1.0);
     inCell(c, box(4.5, 0.68, 0.08, M.dark), 0, -0.55, 0.6);
@@ -1070,9 +1070,9 @@
     var foot = cyl(0.3, 0.05, M.dark); foot.position.y = 0.03; chair.add(foot);
     inCell(c, chair, -0.2, -1.5, 0.34);
 
-    [[-1.55, '8,56 / 10', 'NOTA MEDIA DEL GRADO', 'INGENIERÍA MECATRÓNICA', 'UNIVERSITAT DE VIC · 2022–2026', null],
-     [0, '11', 'MATRÍCULAS DE HONOR', 'RENDIMIENTO SOSTENIDO', 'EXPEDIENTE COMPLETO', '#ffb54d'],
-     [1.55, '9,5 / 10', 'TRABAJO DE FIN DE GRADO', 'DISPENSADOR AUTOMÁTICO', 'AWAYTER · 2025–2026', null]
+    [[-1.55, '8.56 / 10', 'DEGREE AVERAGE', 'MECHATRONICS ENGINEERING', 'UNIVERSITAT DE VIC · 2022–2026', null],
+     [0, '11', 'COURSE HONOURS', 'CONSISTENT ACHIEVEMENT', 'ACADEMIC RECORD', '#ffb54d'],
+     [1.55, '9.5 / 10', 'FINAL-YEAR PROJECT', 'AUTOMATIC DISPENSER', 'AWAYTER · 2025–2026', null]
     ].forEach(function (s) {
       var grp = new T.Group();
       grp.add(box(1.42, 0.98, 0.07, M.dark));
@@ -1084,14 +1084,14 @@
       inCell(c, box(0.06, 0.95, 0.06, M.steelD), s[0], 1.05, 1.05, false);
     });
 
-    inCell(c, controlCabinet([{ big: 'LÍNEA A', small: 'ESTADO: EN MARCHA', rule: 1 },
-                              { small: 'ORIGEN · IBIZA 2016' }]), 3.2, 0.5, 0.34);
+    inCell(c, controlCabinet([{ big: 'LINE A', small: 'STATUS: RUNNING', rule: 1 },
+                              { small: 'ORIGIN · IBIZA 2016' }]), 3.2, 0.5, 0.34);
     inCell(c, robotArm(0.85, 0xb9c2b7), 2.9, -1.4, 0.34);
   })();
 
   /* ---------- 02 · Ibiza 2016 · banco de montaje ---------- */
   (function () {
-    var c = cell(2, { signTitle: 'IBIZA · 2016', signSub: 'EST. 02 · CLUB DE ROBÓTICA EDUCATIVA', decal: '02' });
+    var c = cell(2, { signTitle: 'IBIZA · 2016', signSub: 'ST. 02 · EDUCATIONAL ROBOTICS CLUB', decal: '02' });
 
     inCell(c, workbench(4.4, 1.6), 0, 0.9, 0.34);
 
@@ -1135,7 +1135,7 @@
 
   /* ---------- 03 · Tailandia 2018 · mesa de competición ---------- */
   (function () {
-    var c = cell(3, { signTitle: 'THAILAND · 2018', signSub: 'EST. 03 · WRO REGULAR JUNIOR · 23.º MUNDIAL',
+    var c = cell(3, { signTitle: 'THAILAND · 2018', signSub: 'ST. 03 · WRO REGULAR JUNIOR · 23RD WORLDWIDE',
                       decal: '03' });
 
     inCell(c, box(4.8, 0.12, 3.6, M.white), 0, 0.2, 0.72);
@@ -1162,10 +1162,10 @@
     var board = new T.Group();
     board.add(box(1.6, 1.1, 0.08, M.dark));
     var scr = panel(1.46, 0.96, new T.MeshBasicMaterial({
-      map: screenTexture([{ big: '23.º', small: 'CLASIFICACIÓN MUNDIAL', rule: 1 },
-                          { small: 'CATEGORÍA REGULAR JUNIOR' },
-                          { small: 'GESTIÓN AUTÓNOMA DE CULTIVOS' },
-                          { small: 'FINAL INTERNACIONAL · TAILANDIA' }], '#ffb54d') }));
+      map: screenTexture([{ big: '23RD', small: 'WORLD RANKING', rule: 1 },
+                          { small: 'REGULAR JUNIOR CATEGORY' },
+                          { small: 'AUTONOMOUS CROP MANAGEMENT' },
+                          { small: 'INTERNATIONAL FINAL · THAILAND' }], '#ffb54d') }));
     scr.position.z = 0.05; board.add(scr);
     inCell(c, board, 1.0, 2.4, 2.3);
     inCell(c, box(0.09, 2.0, 0.09, M.steelD), 1.0, 2.4, 1.0, false);
@@ -1176,7 +1176,7 @@
 
   /* ---------- 04 · WRO 2021 · vitrina Future Engineers ---------- */
   (function () {
-    var c = cell(4, { signTitle: 'WRO 2021', signSub: 'EST. 04 · FUTURE ENGINEERS · 6.º MUNDIAL',
+    var c = cell(4, { signTitle: 'WRO 2021', signSub: 'ST. 04 · FUTURE ENGINEERS · 6TH WORLDWIDE',
                       decal: '04', w: 7.8, d: 6.8 });
 
     inCell(c, safetyFence(7.4, 6.4), 0, 0, 0.34);
@@ -1205,16 +1205,16 @@
     photoPanel(c, 'robot-side.jpg', 3.0, 2.2, -1.75, 2.75);
     photoPanel(c, 'team.jpg', 1.45, 2.2, 1.95, 2.75);
 
-    inCell(c, controlCabinet([{ big: '6.º', small: 'PUESTO MUNDIAL · WRO', rule: 1 },
-                              { small: 'CATEGORÍA FUTURE ENGINEERS' },
-                              { small: 'ROBOT DE CONDUCCIÓN AUTÓNOMA' }]), -3.3, -1.4, 0.34);
+    inCell(c, controlCabinet([{ big: '6TH', small: 'WORLD RANKING · WRO', rule: 1 },
+                              { small: 'FUTURE ENGINEERS CATEGORY' },
+                              { small: 'SELF-DRIVING ROBOT' }]), -3.3, -1.4, 0.34);
     inCell(c, robotArm(0.9, 0xd0e98b), 3.4, -0.4, 0.34);
     inCell(c, toolTrolley(), 2.9, -2.1, 0.34);
   })();
 
   /* ---------- 05 · Panamá 2023 · pista de pruebas ---------- */
   (function () {
-    var c = cell(5, { signTitle: 'PANAMÁ · 2023', signSub: 'EST. 05 · VEHÍCULO AUTÓNOMO ACME',
+    var c = cell(5, { signTitle: 'PANAMA · 2023', signSub: 'ST. 05 · ACME AUTONOMOUS VEHICLE',
                       decal: '05', w: 8.6, d: 7.6, lat: 8.4 });
 
     inCell(c, safetyFence(8.2, 7.2), 0, 0, 0.34);
@@ -1263,23 +1263,23 @@
     var lapLid = new T.Group(); lapLid.position.set(0, 0.95, -0.1); cart.add(lapLid);
     var lidM = box(0.44, 0.3, 0.02, M.dark); lidM.position.y = 0.14; lapLid.add(lidM);
     var lapScr = panel(0.4, 0.26, new T.MeshBasicMaterial({
-      map: screenTexture([{ small: '> TELEMETRIA ACME' }, { small: 'PID  Kp 1.8  Ki 0.05' },
+      map: screenTexture([{ small: '> ACME TELEMETRY' }, { small: 'PID  Kp 1.8  Ki 0.05' },
                           { small: 'US_L 42cm  US_R 39cm' }, { small: 'CAM  ROI ok' }]) }));
     lapScr.position.set(0, 0.14, 0.02); lapLid.add(lapScr);
     lapLid.rotation.x = -1.15;
     inCell(c, cart, -3.75, -1.9, 0.34);
 
-    inCell(c, controlCabinet([{ big: 'C++', small: 'PROGRAMACIÓN DEL VEHÍCULO', rule: 1 },
+    inCell(c, controlCabinet([{ big: 'C++', small: 'VEHICLE PROGRAMMING', rule: 1 },
                               { small: '3 × ATmega32U4 · BUS I2C' },
-                              { small: 'ULTRASONIDOS · CÁMARA · PID' },
-                              { small: 'ARQUITECTURA DISTRIBUIDA' }]), 3.85, 1.5, 0.34);
+                              { small: 'ULTRASONIC · CAMERA · PID' },
+                              { small: 'DISTRIBUTED ARCHITECTURE' }]), 3.85, 1.5, 0.34);
     inCell(c, robotArm(0.85, 0x27bd2c), -3.85, 1.3, 0.34);
     inCell(c, toolTrolley(), 3.8, -1.9, 0.34);
   })();
 
   /* ---------- 06 · Awayter / TFG · banco de dispensación ---------- */
   (function () {
-    var c = cell(6, { signTitle: 'AWAYTER · TFG', signSub: 'EST. 06 · DISPENSACIÓN A GRANEL',
+    var c = cell(6, { signTitle: 'AWAYTER · FINAL PROJECT', signSub: 'ST. 06 · BULK FOOD DISPENSING',
                       decal: '06', w: 8.0, d: 6.8 });
 
     inCell(c, workbench(4.6, 1.7), -0.4, 1.0, 0.34);
@@ -1301,10 +1301,10 @@
     photoPanel(c, 'prototipos.jpg', 3.3, 1.4, 2.15, 2.75);
     photoPanel(c, 'modular.jpg', 1.6, 1.4, -3.05, 2.75);
 
-    inCell(c, controlCabinet([{ big: '9,5 / 10', small: 'TRABAJO DE FIN DE GRADO', rule: 1 },
-                              { small: 'VÁLVULA ROTATIVA · 4 PALAS FLEX 93A' },
-                              { small: 'TOLVA PETG EXTRAÍBLE' },
-                              { small: 'VENTANA ÓPTICA 7,5° + TRAMPA DE LUZ' }]), 3.7, 0.2, 0.34);
+    inCell(c, controlCabinet([{ big: '9.5 / 10', small: 'FINAL-YEAR PROJECT', rule: 1 },
+                              { small: 'ROTARY VALVE · 4 FLEX 93A BLADES' },
+                              { small: 'REMOVABLE PETG HOPPER' },
+                              { small: '7.5° OPTICAL WINDOW + LIGHT TRAP' }]), 3.7, 0.2, 0.34);
     inCell(c, toolTrolley(), 2.4, -2.0, 0.34);
     inCell(c, robotArm(0.9, 0x6b4fa8), -3.7, -1.2, 0.34);
 
@@ -1328,11 +1328,11 @@
 
   /* ---------- 07 · capacidades, todo a un lado ---------- */
   (function () {
-    var c = cell(7, { signTitle: 'CAPACIDADES', signSub: 'EST. 07 · UN MISMO SISTEMA',
+    var c = cell(7, { signTitle: 'SKILLS', signSub: 'ST. 07 · ONE INTEGRATED SYSTEM',
                       decal: '07', w: 9.0, d: 5.0, lat: 7.6 });
-    [{ along: -2.9, icon: 'gear', label: 'MECÁNICA\nCAD · 3D · ENSAYOS' },
-     { along: 0, icon: 'wave', label: 'ELECTRÓNICA\nSENSORES · CONTROL' },
-     { along: 2.9, icon: 'code', label: 'PROGRAMACIÓN\nC++ · PYTHON · ROS' }
+    [{ along: -2.9, icon: 'gear', label: 'MECHANICS\nCAD · 3D · TESTING' },
+     { along: 0, icon: 'wave', label: 'ELECTRONICS\nSENSORS · CONTROL' },
+     { along: 2.9, icon: 'code', label: 'PROGRAMMING\nC++ · PYTHON · ROS' }
     ].forEach(function (it, i) {
       inCell(c, cyl(0.55, 0.18, M.steelD), it.along, 0.2, 0.43);
       inCell(c, box(0.18, 1.0, 0.18, M.steelD), it.along, 0.2, 1.0, false);
@@ -1360,7 +1360,7 @@
     });
     var lintel = box(12, 1.3, 1.0, M.dark); place(lintel, u + 0.028, 0, 6.45, 'along'); scene.add(lintel);
     var endSign = panel(7.0, 1.4, new T.MeshBasicMaterial({
-      map: signTexture('FIN DE LÍNEA', 'EST. 08 · ¿HABLAMOS?') }));
+      map: signTexture('END OF THE LINE', 'ST. 08 · LET’S TALK') }));
     place(endSign, u + 0.024, 0, 4.9, 'back'); scene.add(endSign);
 
     [-1, 1].forEach(function (side) {
@@ -1371,8 +1371,8 @@
       var back = box(1.62, 1.12, 0.1, M.dark); back.position.set(0, 1.55, 0.06);
       back.rotation.x = -0.2; con.add(back);
       var scr = panel(1.5, 1.0, new T.MeshBasicMaterial({
-        map: screenTexture([{ big: 'READY', small: 'SISTEMA DISPONIBLE', rule: 1 },
-                            { small: 'BARCELONA · ESPAÑA' },
+        map: screenTexture([{ big: 'READY', small: 'SYSTEM READY', rule: 1 },
+                            { small: 'BARCELONA · SPAIN' },
                             { small: 'alvaroibz2004@gmail.com' }]) }));
       scr.position.set(0, 1.55, 0.16); scr.rotation.x = -0.2; con.add(scr);
     });
@@ -1392,9 +1392,9 @@
 
   /* cajas de la cinta */
   var crateMats = [
-    new T.MeshStandardMaterial({ map: crateMap('#8a6a42', 'LOTE A-12'), roughness: 0.9 }),
-    new T.MeshStandardMaterial({ map: crateMap('#41566a', 'PIEZAS 3D'), roughness: 0.75 }),
-    new T.MeshStandardMaterial({ map: crateMap('#5d7043', 'GRANEL'), roughness: 0.85 })
+    new T.MeshStandardMaterial({ map: crateMap('#8a6a42', 'LOT A-12'), roughness: 0.9 }),
+    new T.MeshStandardMaterial({ map: crateMap('#41566a', '3D PARTS'), roughness: 0.75 }),
+    new T.MeshStandardMaterial({ map: crateMap('#5d7043', 'BULK FOOD'), roughness: 0.85 })
   ];
   var crates = [], CRATE_N = MOBILE ? 7 : 11;
   for (var ci = 0; ci < CRATE_N; ci++) {

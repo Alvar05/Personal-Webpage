@@ -1,51 +1,73 @@
-# Portfolio — Álvaro Hernández Gallardo
+# Álvaro Hernández Gallardo
 
-Web de una sola pantalla (scrollytelling). El scroll mueve una cámara en primera
-persona por una nave industrial; cada estación es un puesto de trabajo con el
-material del capítulo correspondiente de la trayectoria.
+### Mechatronics Engineer · Robotics, Embedded Systems & Prototyping
 
-## Cómo funciona
+I design, build and test systems that connect mechanics, electronics and software. Originally from Ibiza and now based in Barcelona, I am looking for opportunities in robotics, embedded systems, integration and control.
 
-- **Estática**: no hay build ni backend. `index.html` + `style.css` + `app.js` + `assets/`.
-- **3D**: three.js r0.160.1 desde cdnjs. Geometría y texturas generadas por código
-  (no hay modelos externos que descargar).
-- **Sin WebGL**: la página cae automáticamente a un documento normal, con las
-  secciones apiladas y legibles.
-- **Formulario**: envía a [FormSubmit](https://formsubmit.co). El primer envío
-  llega con un correo de confirmación que hay que aceptar una vez.
+**[Explore the portfolio](https://alvar05.github.io/Personal-Webpage/)** · **[ACME robotics project](https://github.com/Alvar05/ACME_WRO_FE_2023)** · **[Get in touch](mailto:alvaroibz2004@gmail.com)**
 
-Tiene que servirse por `http(s)`. Abriendo `index.html` con doble clic
-(`file://`) el navegador bloquea las texturas y la escena sale en negro.
+This repository contains my interactive portfolio: a first-person journey through a 3D factory, with nine stations covering my education, competition robotics, industrial work and technical skills.
 
-## Probar en local
+[![English portfolio — Where code meets the real world](assets/preview-en.png)](https://alvar05.github.io/Personal-Webpage/)
+
+## Engineering highlights
+
+| Project | What it involved | Outcome |
+| --- | --- | --- |
+| **ACME · WRO Future Engineers, 2021** | A team-built self-driving vehicle, including its 3D-printed body, main board and software. | **6th worldwide** in Future Engineers. |
+| **ACME · WRO Panama, 2023** | Three ATmega32U4 microcontrollers communicating over I²C; ultrasonic and ToF sensors, an IMU, a camera, and steering and speed PID control. | Competed in the international final. [Team code and engineering notebook](https://github.com/Alvar05/ACME_WRO_FE_2023). |
+| **Awayter · Junior Engineer / final-year project, 2025–2026** | An automatic bulk food dispenser with a removable rotary valve and four flexible blades; mechanical design, 3D printing and food trials. | Final-year project graded **9.5/10**. Resolved optical sensor reflections with a **7.5° window tilt and a light trap**. |
+
+**Education:** Mechatronics at the Universitat de Vic · **8.56/10** degree average · highest honours (*Matrícula de Honor*) in **11 courses**. Grades are on the Spanish 0–10 scale.
+
+## Technical focus
+
+- **Mechanics:** CAD, mechanical design, prototyping, 3D printing and experimental iteration.
+- **Electronics and control:** sensors, actuators, microcontrollers, I²C communication and PID control.
+- **Programming:** hands-on experience with C++ and Python; MATLAB and ROS through coursework.
+
+The ACME competition results reflect team achievements. The linked project repository provides the engineering documentation behind that work.
+
+## The website
+
+The production-line setting connects the presentation to my engineering background. Scrolling moves the camera between workstations, each paired with a chapter of my story.
+
+- **Interactive 3D environment:** procedural geometry and textures, animated robot arms, vehicles and a dispensing mechanism, with project photographs displayed in the scene.
+- **Nine connected stations:** introduction, education, robotics beginnings, Thailand 2018, WRO 2021, Panama 2023, Awayter, skills and contact.
+- **Direct navigation:** a station map, progress indicator and a persistent contact link.
+- **Responsive interface:** layouts and graphics settings adapted for smaller screens and touch devices.
+- **Accessibility features:** semantic HTML, labelled form fields, visible keyboard focus, a skip link and reduced-motion adjustments. If Three.js or WebGL is unavailable, JavaScript switches to a stacked document layout.
+- **Contact:** a direct email link and a FormSubmit form with browser validation and a honeypot field.
+
+## Technology
+
+**HTML5 · CSS3 · JavaScript · Three.js 0.160.1 · GitHub Pages**
+
+The site is static: no build step, package installation or application server is required. Three.js is loaded from cdnjs, fonts from Google Fonts, and form submissions are handled by FormSubmit. The 3D scene is generated in code; photographs are stored locally in `assets/`.
+
+## Run locally
+
+With Python 3 installed, run this command from the repository root:
 
 ```bash
-python -m http.server 8000
+python -m http.server 8000 --bind 127.0.0.1
 ```
 
-Y abrir <http://localhost:8000>.
+Open [localhost:8000](http://localhost:8000). Serve the site over HTTP rather than opening `index.html` directly, so the browser can load the scene textures correctly. An internet connection is needed for the external services above.
 
-## Publicar en GitHub Pages
+## Repository structure
 
-Con estos ficheros en la raíz del repositorio:
-
-`Settings` → `Pages` → *Source*: `Deploy from a branch` → rama `main`, carpeta `/ (root)`.
-
-El fichero `.nojekyll` evita que GitHub procese la carpeta con Jekyll.
-
-## Estructura
-
-```
-index.html      narración y formulario (texto real, indexable y accesible)
-style.css       interfaz sobre la escena: paneles, raíl de estaciones, HUD
-app.js          escena 3D: trazado, texturas, puestos de trabajo, animación
-assets/         fotos del robot ACME, del TFG y la imagen de previsualización
+```text
+.
+├── index.html       English narrative, metadata, navigation and contact form
+├── style.css        Responsive layout, panels, station map and visual effects
+├── app.js           3D scene, English scene labels, camera and animation
+├── assets/          Project photographs, portrait and social preview image
+├── .nojekyll        Serve the static files without Jekyll processing
+└── README.md
 ```
 
-## Retocar el contenido
+## Contact
 
-- Los textos de cada estación están en `index.html`, en `<section class="station">`.
-- Las estaciones del 3D se definen en `app.js`, en el array `ST` (posición de
-  scroll, anchura de aparición y lado del pasillo).
-- En la estación 05, los pivotes y la trayectoria del robot salen de la misma
-  tabla `PILLARS`: si mueves un pivote, el recorrido de esquiva se recalcula solo.
+**Álvaro Hernández Gallardo** · Barcelona, Spain
+[alvaroibz2004@gmail.com](mailto:alvaroibz2004@gmail.com) · [GitHub](https://github.com/Alvar05)
